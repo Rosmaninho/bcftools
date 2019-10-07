@@ -1,0 +1,30 @@
+FROM ubuntu:18.04 #fetches docker image ubuntu:16.04
+MAINTAINER rosmaninho <pedro.rosmaninho@medicina.ulisboa.pt # maintainer name
+
+
+########################################################
+#software BCFTOOLS
+########################################################
+
+
+#setup ENV variables
+
+
+ENV BCFTOOLS_HOME        /usr/local/bcftools
+ENV GLIBC_VERSION       v2.17
+ENV PATH                $BCFTOOLS_HOME/bin:$PATH
+
+ENV TAR_BZ_FILE         bcftools-1.9.tar.bz2
+
+#install libraries
+
+RUN apt-get update && \
+    apt-get install -y git gcc g++ make zlib1g-dev bzip2 libbz2-1.0 libbz2-dev libbz2-ocaml libbz2-ocaml-dev liblzma-dev unzip wget libssl-dev libcurl4-openssl-dev && \
+    wget https://github.com/samtools/bcftools/releases/download/1.9/bcftools-1.9.tar.bz2 && \
+    mkdir -p $bcfools_HOME && \
+    tar -zxvf $TAR_BZ_FILE && \
+    mv bcftools.*/* $BCFTOOLS_HOME/. && \
+    rm $TAR_GZ_FILE && \
+    DEBIAN_FRONTEND=noninteractive apt-get autoremove -y unzip wget && \
+    rm -rf /var/lib/apt/lists/* && \
+    export BCFTOOLS_PLUGINS=/usr/local/bcftools/plugins
