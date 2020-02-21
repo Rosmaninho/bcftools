@@ -14,7 +14,7 @@ ENV BCFTOOLS_HOME        /usr/local/bcftools
 ENV GLIBC_VERSION       v2.17
 ENV PATH                $BCFTOOLS_HOME/bin:$PATH
 
-ENV TAR_BZ_FILE         bcftools-1.9.tar.bz2
+ENV TAR_BZ_FILE         bcftools-1.10.2.tar.bz2
 
 #install libraries
 
