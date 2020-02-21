@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 #fetches docker image ubuntu:16.04
+FROM ubuntu:18.04 #fetches docker image ubuntu:18.04
 MAINTAINER rosmaninho <pedro.rosmaninho@medicina.ulisboa.pt # maintainer name
 
 
