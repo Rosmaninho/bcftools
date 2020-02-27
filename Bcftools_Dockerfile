@@ -5,7 +5,8 @@ MAINTAINER rosmaninho <pedro.rosmaninho@medicina.ulisboa.pt
 
 
 ########################################################
-#software BCFTOOLS
+LABEL base.image="ubuntu:18.04"
+#software BCFTOOLS https://samtools.github.io/bcftools/bcftools.html
 ########################################################
 
 #setup ENV variables
@@ -17,14 +18,19 @@ ENV PATH                $BCFTOOLS_HOME/bin:$PATH
 ENV TAR_BZ_FILE         bcftools-1.10.2.tar.bz2
 
 #install libraries
-
 RUN apt-get update && \
-    apt-get install -y git gcc g++ make zlib1g-dev bzip2 libbz2-1.0 libbz2-dev libbz2-ocaml libbz2-ocaml-dev liblzma-dev unzip wget libssl-dev libcurl4-openssl-dev && \
+    apt-get upgrade -y && \
+    apt-get install -y git gcc libperl-dev g++ make libgsl0-dev zlib1g-dev bzip2 libbz2-1.0 libbz2-dev libbz2-ocaml libbz2-ocaml-dev liblzma-dev unzip wget libssl-dev libcurl4-openssl-dev autoconf
+
+RUN mkdir -p "$BCFTOOLS_HOME" && \
+    cd "$BCFTOOLS_HOME" && \
     wget https://github.com/samtools/bcftools/releases/download/1.10.2/bcftools-1.10.2.tar.bz2 && \
-    mkdir -p $BCFTOOLS_HOME && \
     tar -xjvf $TAR_BZ_FILE && \
     mv bcftools-*/* $BCFTOOLS_HOME/. && \
-    rm $TAR_BZ_FILE && \
+    rm $TAR_BZ_FILE && \   
+    autoheader && autoconf && ./configure --enable-libgsl --enable-perl-filters && \
+    make && \
+    make install && \
+    export BCFTOOLS_PLUGINS=/usr/local/bcftools/plugins && \
     DEBIAN_FRONTEND=noninteractive apt-get autoremove -y unzip wget && \
-    rm -rf /var/lib/apt/lists/* && \
-    export BCFTOOLS_PLUGINS=/usr/local/bcftools/plugins
+    rm -rf /var/lib/apt/lists/* \
